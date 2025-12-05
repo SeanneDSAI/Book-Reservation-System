@@ -1,6 +1,5 @@
 <?php
-session_start();
-include 'config.php';
+require_once 'config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
@@ -25,7 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Verify password
         if (password_verify($password, $user['Password'])) {
-            // Password is correct, start session
+            // Password is correct, prevent session fixation
+            session_regenerate_id(true);
             $_SESSION['username'] = $user['Username'];
             $_SESSION['firstname'] = $user['FirstName'];
             
